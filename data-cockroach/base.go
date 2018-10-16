@@ -94,6 +94,9 @@ func (base *CockroachBase) model(name string) (Map) {
 
 func (base *CockroachBase) error(key string, err error, args ...Any) {
 	if err != nil {
+		//出错自动取消事务
+		base.Cancel()
+
 		errors := []Any{ err }
 		errors = append(errors, args...)
 
@@ -263,17 +266,17 @@ func (base *CockroachBase) Model(name string) (DataModel) {
 
 
 //开启手动模式
-func (base *CockroachBase) Begin() (*sql.Tx) {
+func (base *CockroachBase) Begin() (*sql.Tx, *Error) {
 	base.lastError = nil
 
-	base.manual = true
-
 	if _,err := base.begin(); err != nil {
-		base.lastError = Bigger.Erred(err)
+		return nil, Bigger.Erred(err)
 	}
-
-	return base.tx
+	
+	base.manual = true
+	return base.tx, nil
 }
+
 
 
 
@@ -322,6 +325,7 @@ func (base *CockroachBase) Submit() (*Error) {
 
 	return nil
 }
+
 
 //取消事务
 func (base *CockroachBase) Cancel() (*Error) {

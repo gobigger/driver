@@ -31,16 +31,7 @@ import (
 const (
 	SQLDRIVER = "postgres"
 	SCHEMA = "public"
-
 	FieldChanged = "changed"
-
-	// StatusField = "status"
-	// StatusRemoved = "removed"
-
-	TriggerCreate = "data.create"
-	TriggerChange = "data.change"
-	TriggerRemove = "data.remove"
-	TriggerRecover = "data.recover"
 )
 
 var (

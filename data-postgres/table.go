@@ -76,7 +76,7 @@ func (table *PostgresTable) Create(data Map) (Map) {
 	if table.base.manual {
 
 		//这里应该保存触发器
-		table.base.trigger(TriggerCreate, Map{ "base": table.base.name, "table": table.name, "entity": value })
+		table.base.trigger(EventDataCreate, Map{ "base": table.base.name, "table": table.name, "entity": value })
 
 		//成功了，但是没有提交事务
 		return value
@@ -176,27 +176,17 @@ func (table *PostgresTable) Change(item Map, data Map) (Map) {
 
 
 	
+	table.base.trigger(EventDataChange, Map{ "base": table.base.name, "table": table.name, "before": item, "after": newItem })
 
-	//注意这里，如果手动提交事务， 那这里直接返回，是不需要提交的
-	if table.base.manual {
-		//这里应该保存触发器
-		table.base.trigger(TriggerChange, Map{ "base": table.base.name, "table": table.name, "before": item, "after": newItem })
+	return newItem
 
-		//成功了，但是没有提交事务
-		return newItem
-
-	} else {
-
-		//这里应该有触发器
-		// TRIGGER.Touch(TriggerChange, Map{ "base": table.base.name, "table": table.name, "before": item, "after": newItem })
-
-		//成功了
-		return newItem
-	}
-
-
-
-	return nil
+	// //注意这里，如果手动提交事务， 那这里直接返回，是不需要提交的
+	// if table.base.manual {
+	// 	//成功了，但是没有提交事务
+	// 	return newItem
+	// } else {
+	// 	return newItem
+	// }
 
 }
 
@@ -363,13 +353,15 @@ func (table *PostgresTable) Remove(args ...Any) (Map) {
 		table.base.error("data.delete.begin", err, table.name, sql, item[table.key])
 		return nil
 	}
+
+	table.base.trigger(EventDataRemove, Map{ "base": table.base.name, "table": table.name, "entity": item })
 	
 	//注意这里，如果手动提交事务， 那这里直接返回，是不需要提交的
-	if table.base.manual {
-		//成功了，但是没有提交事务
-	} else {
-		//
-	}
+	// if table.base.manual {
+	// 	//成功了，但是没有提交事务
+	// } else {
+	// 	//
+	// }
 
 	return item
 }
@@ -401,16 +393,18 @@ func (table *PostgresTable) Delete(args ...Any) (int64) {
 	}
 	
 	affected := int64(0)
-	if val,err := result.RowsAffected(); err == nil {
+	if val,err := result.RowsAffected(); err != nil {
+		table.base.error("data.update.affected", err, table.name)
+	} else {
 		affected = val
 	}
 
 	//注意这里，如果手动提交事务， 那这里直接返回，是不需要提交的
-	if table.base.manual {
-		//成功了，但是没有提交事务
-	} else {
-		//
-	}
+	// if table.base.manual {
+	// 	//成功了，但是没有提交事务
+	// } else {
+	// 	//
+	// }
 
 	return affected
 }
@@ -472,8 +466,6 @@ func (table *PostgresTable) Update(update Map, args ...Any) (int64) {
 		return int64(0)
 	}
 
-		
-
 	//把builds的args加到vals中
 	for _,v := range builds {
 		vals = append(vals, v)
@@ -496,15 +488,17 @@ func (table *PostgresTable) Update(update Map, args ...Any) (int64) {
 
 	affected := int64(0)
 	if val,err := result.RowsAffected(); err != nil {
+		table.base.error("data.update.affected", err, table.name)
+	} else {
 		affected = val
 	}
 
 	//注意这里，如果手动提交事务， 那这里直接返回，是不需要提交的
-	if table.base.manual {
-		//成功了，但是没有提交事务
-	} else {
-		//这是真成功了
-	}
+	// if table.base.manual {
+	// 	//成功了，但是没有提交事务
+	// } else {
+	// 	//这是真成功了
+	// }
 
 	return affected
 }

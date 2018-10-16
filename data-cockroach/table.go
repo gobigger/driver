@@ -15,7 +15,6 @@ type (
 	}
 )
 
-
 //创建对象
 func (table *CockroachTable) Create(data Map) (Map) {
 	table.base.lastError = nil
@@ -72,23 +71,27 @@ func (table *CockroachTable) Create(data Map) (Map) {
 	value[table.key] = id
 
 
+	//触发器
+	table.base.trigger(EventDataCreate, Map{ "base": table.base.name, "table": table.name, "entity": value })
+
+	return value
+
 	//注意这里，如果手动提交事务， 那这里直接返回，是不需要提交的
-	if table.base.manual {
+	// if table.base.manual {
 
-		//这里应该保存触发器
-		table.base.trigger(TriggerCreate, Map{ "base": table.base.name, "table": table.name, "entity": value })
+	// 	//这里应该保存触发器
+		
+	// 	//成功了，但是没有提交事务
+	// 	return value
 
-		//成功了，但是没有提交事务
-		return value
+	// } else {
 
-	} else {
+	// 	//这里应该有触发器
+	// 	// TRIGGER.Touch(TriggerCreate, Map{ "base": table.base.name, "table": table.name, "entity": value })
 
-		//这里应该有触发器
-		// TRIGGER.Touch(TriggerCreate, Map{ "base": table.base.name, "table": table.name, "entity": value })
-
-		//成功了
-		return value
-	}
+	// 	//成功了
+	// 	return value
+	// }
 
 
 
@@ -176,27 +179,31 @@ func (table *CockroachTable) Change(item Map, data Map) (Map) {
 
 
 	
+	//触发器
+	table.base.trigger(EventDataChange, Map{ "base": table.base.name, "table": table.name, "before": item, "after": newItem })
+
+	return newItem
 
 	//注意这里，如果手动提交事务， 那这里直接返回，是不需要提交的
-	if table.base.manual {
-		//这里应该保存触发器
-		table.base.trigger(TriggerChange, Map{ "base": table.base.name, "table": table.name, "before": item, "after": newItem })
+	// if table.base.manual {
+	// 	//这里应该保存触发器
+	// 	table.base.trigger(TriggerChange, Map{ "base": table.base.name, "table": table.name, "before": item, "after": newItem })
 
-		//成功了，但是没有提交事务
-		return newItem
+	// 	//成功了，但是没有提交事务
+	// 	return newItem
 
-	} else {
+	// } else {
 
-		//这里应该有触发器
-		// TRIGGER.Touch(TriggerChange, Map{ "base": table.base.name, "table": table.name, "before": item, "after": newItem })
+	// 	//这里应该有触发器
+	// 	// TRIGGER.Touch(TriggerChange, Map{ "base": table.base.name, "table": table.name, "before": item, "after": newItem })
 
-		//成功了
-		return newItem
-	}
+	// 	//成功了
+	// 	return newItem
+	// }
 
 
 
-	return nil
+	// return nil
 
 }
 
@@ -360,18 +367,23 @@ func (table *CockroachTable) Remove(args ...Any) (Map) {
 	sql := fmt.Sprintf(`DELETE FROM "%s"."%s" WHERE %s=$1`, table.schema, table.view, table.key)
 	_,err = exec.Exec(sql, item[table.key])
 	if err != nil {
-		table.base.error("data.delete.begin", err, table.name, sql, item[table.key])
+		table.base.error("data.remove.exec", err, table.name, sql, item[table.key])
 		return nil
 	}
-	
-	//注意这里，如果手动提交事务， 那这里直接返回，是不需要提交的
-	if table.base.manual {
-		//成功了，但是没有提交事务
-	} else {
-		//
-	}
+
+	//触发器
+	table.base.trigger(EventDataRemove, Map{ "base": table.base.name, "table": table.name, "entity": item })
 
 	return item
+	
+	//注意这里，如果手动提交事务， 那这里直接返回，是不需要提交的
+	// if table.base.manual {
+	// 	//成功了，但是没有提交事务
+	// } else {
+	// 	//
+	// }
+
+	// return item
 }
 
 
@@ -400,17 +412,20 @@ func (table *CockroachTable) Delete(args ...Any) (int64) {
 		return int64(0)
 	}
 	
+	
 	affected := int64(0)
-	if val,err := result.RowsAffected(); err == nil {
+	if val,err := result.RowsAffected(); err != nil {
+		table.base.error("data.update.affected", err, table.name)
+	} else {
 		affected = val
 	}
 
-	//注意这里，如果手动提交事务， 那这里直接返回，是不需要提交的
-	if table.base.manual {
-		//成功了，但是没有提交事务
-	} else {
-		//
-	}
+	// //注意这里，如果手动提交事务， 那这里直接返回，是不需要提交的
+	// if table.base.manual {
+	// 	//成功了，但是没有提交事务
+	// } else {
+	// 	//
+	// }
 
 	return affected
 }
@@ -496,15 +511,17 @@ func (table *CockroachTable) Update(update Map, args ...Any) (int64) {
 
 	affected := int64(0)
 	if val,err := result.RowsAffected(); err != nil {
+		table.base.error("data.update.affected", err, table.name)
+	} else {
 		affected = val
 	}
 
-	//注意这里，如果手动提交事务， 那这里直接返回，是不需要提交的
-	if table.base.manual {
-		//成功了，但是没有提交事务
-	} else {
-		//这是真成功了
-	}
+	// //注意这里，如果手动提交事务， 那这里直接返回，是不需要提交的
+	// if table.base.manual {
+	// 	//成功了，但是没有提交事务
+	// } else {
+	// 	//这是真成功了
+	// }
 
 	return affected
 }
