@@ -156,7 +156,7 @@ func (connect *defaultViewConnect) newDefaultViewParser(ctx *Context, body ViewB
     helpers["body"] = parser.bodyHelper
     helpers["render"] = parser.renderHelper
     helpers["meta"] = parser.metaHelper
-    helpers["meta"] = parser.metasHelper
+    helpers["metas"] = parser.metasHelper
     helpers["style"] = parser.styleHelper
     helpers["styles"] = parser.stylesHelper
     helpers["script"] = parser.scriptHelper
