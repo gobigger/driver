@@ -2,11 +2,12 @@ package logger_file
 
 
 import (
-	"path"
-	"time"
     . "github.com/gobigger/bigger"
     "github.com/gobigger/bigger/log"
     "strings"
+	"path"
+	"time"
+    "os"
 )
 
 const (
@@ -31,6 +32,15 @@ func (driver *fileLoggerDriver) Connect(config LoggerConfig) (LoggerConnect,*Err
     if vv,ok := config.Setting["store"].(string); ok && vv != "" {
         store = vv
     }
+
+
+		_,e := os.Stat(store)
+		if e != nil {
+			//创建目录，如果不存在
+			os.MkdirAll(store, 0700)
+		}
+
+
 
     return &fileLoggerConnect{
         config: config, store: store,
