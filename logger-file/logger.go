@@ -2,6 +2,7 @@ package logger_file
 
 
 import (
+	"path"
 	"time"
     . "github.com/gobigger/bigger"
     "github.com/gobigger/bigger/log"
@@ -9,12 +10,7 @@ import (
 )
 
 const (
-    defaultErrorFile    = "store/logs/error.log"
-    defaultWarningFile  = "store/logs/warning.log"
-    defaultInfoFile     = "store/logs/info.log"
-    defaultTraceFile    = "store/logs/trace.log"
-    defaultDebugFile    = "store/logs/debug.log"
-    defaultOutputFile   = "store/logs/output.log"
+    defaultStore = "store/logs"
 )
 
 //默认logger驱动
@@ -24,13 +20,20 @@ type (
     fileLoggerConnect struct {
         config  LoggerConfig
         logger  *log.Logger
+        store   string
     }
 )
 
 
 func (driver *fileLoggerDriver) Connect(config LoggerConfig) (LoggerConnect,*Error) {
+    
+    store := defaultStore
+    if vv,ok := config.Setting["store"].(string); ok && vv != "" {
+        store = vv
+    }
+
     return &fileLoggerConnect{
-        config: config,
+        config: config, store: store,
     },nil
 }
 
@@ -38,6 +41,13 @@ func (driver *fileLoggerDriver) Connect(config LoggerConfig) (LoggerConnect,*Err
 //打开连接
 func (connect *fileLoggerConnect) Open() *Error {
     connect.logger = log.NewLogger()
+
+    defaultErrorFile    := path.Join(connect.store, "error.log")
+    defaultWarningFile  := path.Join(connect.store, "warning.log")
+    defaultInfoFile     := path.Join(connect.store, "info.log")
+    defaultTraceFile    := path.Join(connect.store, "trace.log")
+    defaultDebugFile    := path.Join(connect.store, "debug.log")
+    defaultOutputFile   := path.Join(connect.store, "output.log")
 
     logFiles := map[int]string{}
 
