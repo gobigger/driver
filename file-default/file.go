@@ -2,7 +2,7 @@ package file_default
 
 
 import (
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 	"strings"
     "sync"
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"io"
 	"path"
 	"time"
-	"github.com/yatlabs/bigger/hashring"
+	"github.com/gobigger/bigger/hashring"
 	"github.com/disintegration/imaging"
 )
 

@@ -2,7 +2,7 @@ package event_redis
 
 
 import (
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 	"time"
 	"sync"
 	"encoding/json"

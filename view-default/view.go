@@ -4,7 +4,7 @@ package view_default
 import (
 	"io/ioutil"
 	"path"
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 	"strings"
 	"fmt"
 	"html/template"

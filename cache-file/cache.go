@@ -2,7 +2,7 @@ package cache_file
 
 
 import (
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
     "sync"
 	"time"
 	"encoding/json"

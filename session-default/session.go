@@ -2,7 +2,7 @@ package session_default
 
 
 import (
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
     "sync"
     "time"
 )

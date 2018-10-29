@@ -3,7 +3,7 @@ package mutex_redis
 
 
 import (
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 	"time"
 	"github.com/gomodule/redigo/redis"
 )

@@ -1,7 +1,7 @@
 package mutex_memcache
 
 import (
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 )
 
 func Driver() (MutexDriver) {

@@ -3,8 +3,8 @@ package logger_file
 
 import (
 	"time"
-    . "github.com/yatlabs/bigger"
-    "github.com/yatlabs/bigger/log"
+    . "github.com/gobigger/bigger"
+    "github.com/gobigger/bigger/log"
     "strings"
 )
 

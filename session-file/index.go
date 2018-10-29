@@ -1,7 +1,7 @@
 package session_file
 
 import (
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 )
 
 func Driver() (SessionDriver) {

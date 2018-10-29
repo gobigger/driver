@@ -2,7 +2,7 @@ package data_postgres
 
 
 import (
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 	"database/sql"
 	"fmt"
 	"strings"

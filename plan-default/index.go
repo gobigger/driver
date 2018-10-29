@@ -1,7 +1,7 @@
 package plan_default
 
 import (
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 )
 
 func Driver() (PlanDriver) {

@@ -1,7 +1,7 @@
 package socket_default
 
 import (
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 	"bytes"
 	"time"
 	"github.com/gorilla/websocket"

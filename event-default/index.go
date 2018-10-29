@@ -1,7 +1,7 @@
 package event__default
 
 import (
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 )
 
 func Driver() (EventDriver) {

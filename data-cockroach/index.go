@@ -23,7 +23,7 @@ package data_cockroach
 
 
 import (
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 	_ "github.com/lib/pq"   //此包自动注册名为postgres的sql驱动
 )
 

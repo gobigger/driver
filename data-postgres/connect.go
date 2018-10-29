@@ -2,7 +2,7 @@ package data_postgres
 
 import (
 	"sync"
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 	"database/sql"
 )
 

@@ -2,8 +2,8 @@ package logger_default
 
 
 import (
-    . "github.com/yatlabs/bigger"
-    "github.com/yatlabs/bigger/log"
+    . "github.com/gobigger/bigger"
+    "github.com/gobigger/bigger/log"
     "strings"
 )
 

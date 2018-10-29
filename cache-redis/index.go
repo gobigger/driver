@@ -1,7 +1,7 @@
 package cache_redis
 
 import (
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 )
 
 func Driver() (CacheDriver) {

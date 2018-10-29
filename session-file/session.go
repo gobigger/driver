@@ -3,7 +3,7 @@ package session_file
 
 
 import (
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 	"time"
 	"encoding/json"
 	"github.com/tidwall/buntdb"

@@ -3,7 +3,7 @@ package session_memcache
 
 
 import (
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 	"time"
 	"fmt"
 	"github.com/pangudashu/memcache"

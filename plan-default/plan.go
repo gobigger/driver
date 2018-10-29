@@ -2,8 +2,8 @@ package plan_default
 
 
 import (
-	. "github.com/yatlabs/bigger"
-	"github.com/yatlabs/bigger/cron"
+	. "github.com/gobigger/bigger"
+	"github.com/gobigger/bigger/cron"
 	"time"
 	"sync"
 	"fmt"

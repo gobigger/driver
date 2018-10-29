@@ -3,7 +3,7 @@ package data_cockroach
 
 import (
 	"strings"
-	. "github.com/yatlabs/bigger"
+	. "github.com/gobigger/bigger"
 	"net/url"
 )
 
