@@ -511,6 +511,7 @@ func (base *CockroachBase) parsing(i int,args ...Any) (string,[]interface{},stri
 	//结果要处理一下，字段包裹、参数处理
 	sql = strings.Replace(sql, DELIMS, `"`, -1)
 	odr = strings.Replace(odr, DELIMS, `"`, -1)
+	odr = strings.Replace(odr, RANDBY, `RANDOM()`, -1)
 	for range val {
 		sql = strings.Replace(sql, "?", fmt.Sprintf("$%d", i), 1)
 		i++
