@@ -6,11 +6,13 @@ import (
 	_ "github.com/gobigger/driver/mutex-default"
 	_ "github.com/gobigger/driver/mutex-memcache"
 	_ "github.com/gobigger/driver/mutex-redis"
+
 	_ "github.com/gobigger/driver/session-default"
 	_ "github.com/gobigger/driver/session-redis"
 	_ "github.com/gobigger/driver/session-memcache"
 	_ "github.com/gobigger/driver/session-file"
 	_ "github.com/gobigger/driver/session-memory"
+	_ "github.com/gobigger/driver/session-godown"
 
 	_ "github.com/gobigger/driver/cache-default"
 	_ "github.com/gobigger/driver/cache-file"
