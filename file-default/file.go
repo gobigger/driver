@@ -373,7 +373,7 @@ func (base *defaultFileBase) storaging(data *FileCoding) (string,string,string,*
 func (base *defaultFileBase) thumbnailing(data *FileCoding, width, height, tttt int64) (string,string,string,*Error) {
 	if ring := base.connect.hashring.Locate(data.Full()); ring != "" {
 
-		data.Type = "jpg"
+		// data.Type = "jpg"	//不能直接改，因为是*data，所以扩展名不同的，生成缩图就有问题了，ring变了
 		namenoext := strings.TrimSuffix(data.Name, "." + data.Type)
 
 		tpath := path.Join(base.connect.setting.Thumbnail, ring, namenoext)
